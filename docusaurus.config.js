@@ -12,7 +12,7 @@ const redocusaurus = [
       {
         id: 'using-single-yaml',
         spec: 'openapi/single-file/openapi.yaml',
-        route: '/examples/using-single-yaml/',
+        route: '/docs/cloud/API',
       },
     ],
     theme: {
