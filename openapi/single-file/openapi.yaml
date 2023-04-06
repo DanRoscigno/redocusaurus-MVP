@@ -1,0 +1,1499 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI spec for ClickHouse Cloud",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.control-plane.clickhouse-staging.com"
+    }
+  ],
+  "paths": {
+    "/v1/organizations/:organizationId": {
+      "get": {
+        "summary": "Get organization details",
+        "description": "Returns details of a single organization. In order to get the details, the auth key must belong to the organization.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update organization details",
+        "description": "Updates organization fields. Requires ADMIN auth key role.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganizationPatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations": {
+      "get": {
+        "summary": "Get list of available organizations",
+        "description": "Returns a list with a single organization associated with the API key in the request.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/services": {
+      "get": {
+        "summary": "List of organization services",
+        "description": "Returns a list of all services in the organization.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new service",
+        "description": "Creates a new service in the organization, and returns the current service state and a password to access the service. The service is started asynchronously.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicePostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicePostResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/services/:serviceId": {
+      "get": {
+        "summary": "Get service details",
+        "description": "Returns a service that belongs to the organization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update service details.",
+        "description": "Updates service details.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicePatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete service.",
+        "description": "Deletes the service. The service must be in stopped state and is deleted asynchronously after this method call.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/organizations/:organizationId/services/:serviceId/state": {
+      "patch": {
+        "summary": "Change service state.",
+        "description": "Starts or stop service",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceStatePatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/services/:serviceId/scaling": {
+      "patch": {
+        "summary": "Change service auto scaling.",
+        "description": "Updates minimum and maximum total memory limits and idle mode scaling behavior for the service",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceScalingPatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/services/:serviceId/password": {
+      "patch": {
+        "summary": "Reset service password.",
+        "description": "Sets a new password for the service",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicePasswordPatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicePasswordPatchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/services/:serviceId/backups": {
+      "get": {
+        "summary": "List of service backups",
+        "description": "Returns a list of all backups for the service.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Backup"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new backup",
+        "description": "Triggers a new backup creation for the service.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupPostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Backup"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/services/:serviceId/backups/:backupId": {
+      "get": {
+        "summary": "Get backup details",
+        "description": "Returns a single backup info.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service backup ID",
+            "schema": {
+              "type": "string",
+              "text": "Service backup ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Backup"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a backup",
+        "description": "Deletes current backup and all incremental backups that depends on the backup.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service ID",
+            "schema": {
+              "type": "string",
+              "text": "Service ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Service backup ID",
+            "schema": {
+              "type": "string",
+              "text": "Service backup ID"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/organizations/:organizationId/keys": {
+      "get": {
+        "summary": "Get list of all ApiKeys",
+        "description": "Returns a list of all ApiKeys of the organization.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKey"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create ApiKey",
+        "description": "Creates new ApiKey.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeyPostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyPostResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/keys/:keyId": {
+      "get": {
+        "summary": "Get ApiKey details",
+        "description": "Returns a single ApiKey details.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "API key ID",
+            "schema": {
+              "type": "string",
+              "text": "API key ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKey"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update ApiKey",
+        "description": "Updates ApiKey properties.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "API key ID",
+            "schema": {
+              "type": "string",
+              "text": "API key ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeyPatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKey"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete ApiKey",
+        "description": "Deletes the ApiKey. Only a key not used to authenticate the active request can be deleted.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "API key ID",
+            "schema": {
+              "type": "string",
+              "text": "API key ID"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/organizations/:organizationId/members": {
+      "get": {
+        "summary": "List organization members",
+        "description": "Returns a list of all members in the organization.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/members/:userId": {
+      "get": {
+        "summary": "Get member details",
+        "description": "Returns a single organization member details.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "User ID",
+            "schema": {
+              "type": "string",
+              "text": "User ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update organization member.",
+        "description": "Updates organization member role.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "User ID",
+            "schema": {
+              "type": "string",
+              "text": "User ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberPatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove an organization member",
+        "description": "Removes a user from the organization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "User ID",
+            "schema": {
+              "type": "string",
+              "text": "User ID"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/organizations/:organizationId/invitations": {
+      "get": {
+        "summary": "List all invitations",
+        "description": "Returns list of all organization invitations.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create an invitation",
+        "description": "Creates organization invitation.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvitationPostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/invitations/:invitationId": {
+      "get": {
+        "summary": "Get invitation details",
+        "description": "Returns details for a single organization invitation.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Organization invitation ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization invitation ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete organization invitation",
+        "description": "Deletes a single organization invitation.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Organization invitation ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization invitation ID"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/organizations/:organizationId/activities": {
+      "get": {
+        "summary": "List of organization activities",
+        "description": "Returns a list of all organization activities.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Activity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/:organizationId/activities/:activityId": {
+      "get": {
+        "summary": "Organization activity",
+        "description": "Returns a single organization activity by ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Organization ID",
+            "schema": {
+              "type": "string",
+              "text": "Organization ID"
+            }
+          },
+          {
+            "in": "path",
+            "name": "Activity ID",
+            "schema": {
+              "type": "string",
+              "text": "Activity ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Activity"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ServiceEndpoint": {
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "description": "Endpoint protocol: 'https' or 'nativesecure'"
+          },
+          "host": {
+            "type": "string",
+            "description": "Service host name"
+          },
+          "port": {
+            "type": "number",
+            "description": "Numeric port"
+          }
+        }
+      },
+      "IpAccessListEntry": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "IP/IP range or CIDR"
+          },
+          "description": {
+            "type": "string",
+            "description": "IP4 address, IP4 address range or IP4 CIDR to allow access from"
+          }
+        }
+      },
+      "Service": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID of the service."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the service."
+          },
+          "regionId": {
+            "type": "string",
+            "description": "Service region."
+          },
+          "state": {
+            "type": "string",
+            "description": "Current state of the service."
+          },
+          "endpoints": {
+            "type": "array",
+            "description": "List of all service endpoints.",
+            "items": {
+              "$ref": "#/components/schemas/ServiceEndpoint"
+            }
+          },
+          "tier": {
+            "type": "string",
+            "description": "Tier of the service: Development or Production."
+          },
+          "minTotalMemoryGb": {
+            "type": "string",
+            "description": "Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services."
+          },
+          "maxTotalMemoryGb": {
+            "type": "string",
+            "description": "Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services."
+          },
+          "idleScaling": {
+            "type": "string",
+            "description": "When set to true the service is allowed to scale down to zero when idle."
+          },
+          "idleTimeoutMinutes": {
+            "type": "number",
+            "description": "Set minimum idling timeout (in minutes). Must be greater than 5 minuets."
+          },
+          "ipAccessList": {
+            "type": "array",
+            "description": "List of IP addresses allowed to access the service",
+            "items": {
+              "$ref": "#/components/schemas/IpAccessListEntry"
+            }
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the service was created."
+          }
+        }
+      },
+      "IpAccessListPatch": {
+        "properties": {
+          "add": {
+            "type": "array",
+            "description": "Elements to add. Executed after \"remove\" part is processed.",
+            "items": {
+              "$ref": "#/components/schemas/IpAccessListEntry"
+            }
+          },
+          "remove": {
+            "type": "array",
+            "description": "Elements to remove. Executed before \"add\" part is processed.",
+            "items": {
+              "$ref": "#/components/schemas/IpAccessListEntry"
+            }
+          }
+        }
+      },
+      "Activity": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique activity id."
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "Time of the activity. Unix epoch milliseconds."
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the activity."
+          },
+          "actorType": {
+            "type": "string",
+            "description": "Type of the actor: 'user', 'api', 'system', 'support'"
+          },
+          "actor": {
+            "type": "string",
+            "description": "Unique actor id."
+          },
+          "actorIpAddress": {
+            "type": "string",
+            "description": "IP address of the actor. Defined for 'user' and 'api' actor types."
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "Scope of the activity: organization id this activity is related to."
+          },
+          "serviceId": {
+            "type": "string",
+            "description": "Scope of the activity: service id this activity is related to."
+          }
+        }
+      },
+      "Backup": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID of the backup."
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the backup: 'done', 'error' or 'in_progress'"
+          },
+          "serviceId": {
+            "type": "string",
+            "description": "Name "
+          },
+          "startedAt": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the backup was started."
+          },
+          "finishedAt": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the backup was finished."
+          },
+          "parentBackupId": {
+            "type": "string",
+            "description": "UUID of the parent backup. Present only for incremental backups."
+          }
+        }
+      },
+      "Member": {
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Unique user ID. If a user is a member in multiple organizations this ID will stay the same."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the member as set a personal user profile."
+          },
+          "email": {
+            "type": "string",
+            "description": "Email of the member as set in personal user profile."
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of the member in the organization."
+          },
+          "joinedAt": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the member joined the organization."
+          }
+        }
+      },
+      "Invitation": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Role of the member in the organization."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique invitation ID."
+          },
+          "email": {
+            "type": "string",
+            "description": "Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form."
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "Invitation creation time. Unix epoch milliseconds."
+          },
+          "expiresAt": {
+            "type": "number",
+            "description": "Time the invitation will expires. Unix epoch milliseconds."
+          }
+        }
+      },
+      "ApiKey": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID of the ApiKey."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the key"
+          },
+          "state": {
+            "type": "string",
+            "description": "State of the ApiKey: 'enabled' or 'disabled'"
+          },
+          "roles": {
+            "type": "array",
+            "description": "List of roles assigned to the ApiKey. Contains at least 1 element",
+            "items": {
+              "type": "string"
+            }
+          },
+          "keySuffix": {
+            "type": "string",
+            "description": "Last 4 letters of the ApiKey."
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the key was created."
+          },
+          "expireAt": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the key will expire. Maximum allowed value: 32503593600000"
+          },
+          "usedAt": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the key was used last time. -1 if the key has never been used."
+          }
+        }
+      },
+      "ApiKeyHashData": {
+        "properties": {
+          "keyIdHash": {
+            "type": "string",
+            "description": "Hash of the key id. "
+          },
+          "keyIdSuffix": {
+            "type": "string",
+            "description": "Last 4 digits of the key id. Algorithm: createHash('sha256').update(str).digest('base64')"
+          },
+          "keySecretHash": {
+            "type": "string",
+            "description": "Hash of the key secret. Algorithm: createHash('sha256').update(str).digest('base64')"
+          }
+        }
+      },
+      "Organization": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID of the organization."
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "Creation date. Unix epoch milliseconds."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the organization."
+          }
+        }
+      },
+      "OrganizationPatchRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the organization."
+          }
+        }
+      },
+      "ServicePostRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the service."
+          },
+          "regionId": {
+            "type": "string",
+            "description": "Service region."
+          },
+          "tier": {
+            "type": "string",
+            "description": "Tier of the service: Development or Production."
+          },
+          "ipAccessList": {
+            "type": "array",
+            "description": "List of IP addresses allowed to access the service",
+            "items": {
+              "$ref": "#/components/schemas/IpAccessListEntry"
+            }
+          },
+          "backupId": {
+            "type": "string",
+            "description": "Optional backup ID used as an initial state for the new service."
+          }
+        }
+      },
+      "ServicePostResponse": {
+        "properties": {
+          "service": {},
+          "password": {
+            "type": "string",
+            "description": "Password for the newly created service."
+          }
+        }
+      },
+      "ServicePatchRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the service."
+          },
+          "ipAccessList": {}
+        }
+      },
+      "ServiceStatePatchRequest": {
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Command to change the state: 'start' or 'stop'"
+          }
+        }
+      },
+      "ServiceScalingPatchRequest": {
+        "properties": {
+          "minTotalMemoryGb": {
+            "type": "string",
+            "description": "Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services."
+          },
+          "maxTotalMemoryGb": {
+            "type": "string",
+            "description": "Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services."
+          },
+          "idleScaling": {
+            "type": "string",
+            "description": "When set to true the service is allowed to scale down to zero when idle."
+          },
+          "idleTimeoutMinutes": {
+            "type": "number",
+            "description": "Set minimum idling timeout (in minutes). Must be greater than 5 minuets."
+          }
+        }
+      },
+      "ServicePasswordPatchRequest": {
+        "properties": {
+          "newPasswordHash": {
+            "type": "string",
+            "description": "Optional password hash. Used to avoid password transmission over network. If not provided the new password is generated and is provided in the response. Otherwise this has is used. NaN"
+          }
+        }
+      },
+      "ServicePasswordPatchResponse": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "New service password. Provided only if there was no 'newPasswordHash' in the request"
+          }
+        }
+      },
+      "BackupPostRequest": {
+        "properties": {}
+      },
+      "ApiKeyPostRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the ApiKey"
+          },
+          "expirationDate": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the key will expire. Maximum allowed value: 32503593600000"
+          },
+          "state": {
+            "type": "string",
+            "description": "Initial state of the ApiKey: 'enabled' or 'disabled'. If not provided the new key will be 'enabled'."
+          },
+          "hashData": {
+            "description": "Optional client side generated hash codes for keyId and keySecret."
+          },
+          "roles": {
+            "type": "array",
+            "description": "List of roles assigned to the ApiKey. Contains at least 1 element",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ApiKeyPostResponse": {
+        "properties": {
+          "key": {},
+          "keyId": {
+            "type": "string",
+            "description": "Generated key id. Provided only if there was no user provided"
+          },
+          "keySecret": {
+            "type": "string",
+            "description": "Generated key secret. Provided only if there was no user provided"
+          }
+        }
+      },
+      "ApiKeyPatchRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the key"
+          },
+          "roles": {
+            "type": "array",
+            "description": "List of roles assigned to the ApiKey. Contains at least 1 element",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expirationDate": {
+            "type": "number",
+            "description": "Unix epoch milliseconds the key will expire. Maximum allowed value: 32503593600000"
+          },
+          "state": {
+            "type": "string",
+            "description": "State of the ApiKey: 'enabled' or 'disabled'"
+          }
+        }
+      },
+      "MemberPatchRequest": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Role of the member in the organization."
+          }
+        }
+      },
+      "InvitationPostRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form."
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of the member in the organization."
+          }
+        }
+      }
+    }
+  }
+}
