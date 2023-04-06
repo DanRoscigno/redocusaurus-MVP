@@ -9,7 +9,7 @@ function ClientOnly() {
         description: 'Example showcasing client only loading of yaml',
       }}
       specProps={{
-        url: 'https://redocly.github.io/redoc/openapi.yaml',
+        url: 'https://api.control-plane.clickhouse-staging.com/v1',
       }}
     />
   );
