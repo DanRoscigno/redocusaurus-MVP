@@ -68,34 +68,6 @@ const config = {
           to: '/docs',
         },
         {
-          label: 'Examples',
-          position: 'left',
-          items: [
-            {
-              label: 'Using Single YAML',
-              to: '/examples/using-single-yaml/',
-            },
-            {
-              label: 'Client Only',
-              to: '/docs/cloud/API/',
-            },
-          ],
-        },
-        {
-          label: 'v1',
-          position: 'right',
-          items: [
-            {
-              label: 'v0',
-              href: 'https://redocusaurus-v0.vercel.app/',
-            },
-            {
-              label: 'v1',
-              href: 'https://redocusaurus.vercel.app',
-            },
-          ],
-        },
-        {
           href: 'https://github.com/rohit-gohri/redocusaurus',
           position: 'right',
           className: 'header-github-logo',
