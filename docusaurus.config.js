@@ -77,7 +77,7 @@ const config = {
             },
             {
               label: 'Client Only',
-              to: '/examples/client-only/',
+              to: '/docs/cloud/API/',
             },
           ],
         },
