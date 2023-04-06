@@ -14,32 +14,6 @@ const redocusaurus = [
         spec: 'openapi/single-file/openapi.yaml',
         route: '/examples/using-single-yaml/',
       },
-      {
-        id: 'using-multi-file-yaml',
-        spec: 'openapi/multi-file/openapi.yaml',
-        route: '/examples/using-multi-file-yaml/',
-      },
-      {
-        id: 'using-swagger-json',
-        spec: 'openapi/swagger/swagger.json',
-        route: '/examples/using-swagger-json/',
-      },
-      {
-        id: 'using-remote-url',
-        // Remote File
-        spec: 'https://redocly.github.io/redoc/openapi.yaml',
-        route: '/examples/using-remote-url/',
-      },
-      {
-        id: 'using-custom-page',
-        spec: 'openapi/single-file/openapi.yaml',
-        // NOTE: no `route` passed, instead data used in custom React Component ('custom-page/index.jsx')
-      },
-      {
-        id: 'using-custom-layout',
-        spec: 'openapi/single-file/openapi.yaml',
-        // NOTE: no `route` passed, instead data used in custom React Component ('custom-layout/index.jsx')
-      },
     ],
     theme: {
       /**
@@ -98,32 +72,8 @@ const config = {
           position: 'left',
           items: [
             {
-              label: 'All',
-              to: '/examples',
-            },
-            {
               label: 'Using Single YAML',
               to: '/examples/using-single-yaml/',
-            },
-            {
-              label: 'Using Remote URL',
-              to: '/examples/using-remote-url/',
-            },
-            {
-              label: 'Using Multiple YAMLs',
-              to: '/examples/using-multi-file-yaml/',
-            },
-            {
-              label: 'Using Swagger',
-              to: '/examples/using-swagger-json/',
-            },
-            {
-              label: 'Custom Page',
-              to: '/examples/custom-page/',
-            },
-            {
-              label: 'Custom Layout',
-              to: '/examples/custom-layout/',
             },
             {
               label: 'Client Only',

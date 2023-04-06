@@ -5,7 +5,7 @@ sidebar_position: 2
 
 ## Nested View with MDX
 
-To display multiple API docs with the Docusaurus sidebar for navigation you can use the MDX component `@theme/ApiDocMdx` along with the setting `hide_table_of_contents` for the file. For an example check the "Nested Docs Example" section in the sidebar.
+To display multiple API docs with the Docusaurus sidebar for navigation you can use the MDX component `@theme/ApiDocMdx` along with the setting `hide_table_of_contents` for the file. For an example check the "Cloud API Docs Example" section in the sidebar.
 
 ```mdx
 ---
@@ -18,7 +18,7 @@ import ApiDocMdx from '@theme/ApiDocMdx';
 <ApiDocMdx id="using-single-yaml" />
 ```
 
-The output of the above is viewable here: [Nested API 1](/docs/nested/nested-1).
+The output of the above is viewable here: [Cloud API](/docs/cloud-api).
 
 ## Full Pages with links in Dropdown
 
